@@ -1,4 +1,6 @@
 from random import randint
+
+
 class Mansion(object):
     def __init__(self, wide, height):
         self.w = wide
@@ -25,11 +27,26 @@ class Mansion(object):
                 i += 1
         print("JEWEL drop on the floor")
 
+    def should_dirt(self):
+        random = randint(0, 99)
+        if random < 29:
+            self.insert_dirt()
+
+    def should_jewel(self):
+        random = randint(0, 99)
+        if random < 29:
+            self.insert_jewel()
+
+    def update(self):
+        self.should_dirt()
+        self.should_jewel()
+
     def show(self):
         for x in range(self.w):
             for y in range(self.h):
-                print(self.board[x][y].state, end='')
+                print(self.board[x][y].state, end=' ')
             print()
+
 
 class Room(object):
     def __init__(self):
