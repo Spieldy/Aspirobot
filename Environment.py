@@ -1,9 +1,16 @@
 from random import randint
 from Agent import Robot
+import os
 
 
 class Mansion(object):
     def __init__(self, width, height, debug):
+        self.av_action = None
+        self.av_pickup = None
+        self.av_suck = None
+        self.nb_action = 0
+        self.nb_pickup = 0
+        self.nb_suck = 0
         self.debug = debug
         self.width = width
         self.height = height
@@ -40,17 +47,36 @@ class Mansion(object):
             if self.debug:
                 print("OUPS, jewel lost")
         self.board[self.x_robot][self.y_robot].state = 0
+        self.nb_suck += 1
+        self.nb_action += 1
 
     def pickup_room(self):
         if self.board[self.x_robot][self.y_robot].state == 2:
             self.board[self.x_robot][self.y_robot].state = 0
+            self.nb_pickup += 1
+            self.nb_action += 1
         if self.board[self.x_robot][self.y_robot].state == 3:
             self.board[self.x_robot][self.y_robot].state = 1
+            self.nb_pickup += 1
+            self.nb_action += 1
         if self.board[self.x_robot][self.y_robot].state == 1:
             if self.debug:
                 print("Dirt not to pick up !!")
 
     def show(self):
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print("Number")
+        print("  actions:  " + str(self.nb_action))
+        print("  pickups:  " + str(self.nb_pickup))
+        print("  sucks:    " + str(self.nb_suck))
+        if self.nb_suck > 0:
+            print("Ratio")
+            print("  pickups/sucks:  " + str(self.nb_pickup / self.nb_suck))
+        print("Average")
+        print("  move before action:  " + str(self.av_action))
+        print("  move before pickup:  " + str(self.av_suck))
+        print("  move before suck:    " + str(self.av_pickup))
+        print()
         print('+', end='')
         for i in range(self.width):
             print(' -', end='')
