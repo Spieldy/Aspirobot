@@ -19,8 +19,8 @@ class Robot(object):
     def update(self):
         self.move()
 
-    def move(self):  # TODO up() right() etc does not work because it now needs to call Room.set_robot()
-        r = randint(0, 3)  # TODO maybe add move commands to Mansion
+    def move(self):
+        r = randint(0, 3)
         if r == 0:
             self.up()
         if r == 1:
