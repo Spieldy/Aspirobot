@@ -11,10 +11,7 @@ def cls():
     print(clear)
 
 while True:
-    cls()
     mansion.update()
     mansion.show()
-    time.sleep(1.25)
+    time.sleep(1.00)
     print()
-
-

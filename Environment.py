@@ -2,48 +2,34 @@ from random import randint
 
 
 class Mansion(object):
-    def __init__(self, wide, height):
-        self.w = wide
-        self.h = height
-        self.board = [[Room() for x in range(self.w)] for y in range(self.h)]
-
-    def insert_dirt(self):
-        random = randint(0, self.w * self.h)
-        i = 0
-        for x in range(self.w):
-            for y in range(self.h):
-                if i == random:
-                    self.board[x][y].insert_dirt()
-                i += 1
-        print("Wild DIRT appeared!")
-
-    def insert_jewel(self):
-        random = randint(0, self.w * self.h)
-        i = 0
-        for x in range(self.w):
-            for y in range(self.h):
-                if i == random:
-                    self.board[x][y].insert_jewel()
-                i += 1
-        print("JEWEL drop on the floor")
-
-    def should_dirt(self):
-        random = randint(0, 99)
-        if random < 29:
-            self.insert_dirt()
-
-    def should_jewel(self):
-        random = randint(0, 99)
-        if random < 29:
-            self.insert_jewel()
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+        self.board = [[Room() for x in range(self.width)] for y in range(self.height)]
 
     def update(self):
-        self.should_dirt()
-        self.should_jewel()
+        event_occurred = randint(0, 99)
+        if event_occurred < 29:
+            x = randint(0, self.width - 1)
+            y = randint(0, self.height - 1)
+            print('+dirt (', x, ',', y, ')')
+            self.board[x][y].insert_dirt()
+        event_occurred = randint(0, 99)
+        if event_occurred < 29:
+            x = randint(0, self.width - 1)
+            y = randint(0, self.height - 1)
+            print('+jewel (', x, ',', y, ')')
+            self.board[x][y].insert_jewel()
+
+    def suck_room(self, x, y):
+        self.board[x][y] = 0
+
+    def pickup_room(self, x, y):
+        self.board[x][y] = 0
 
     def show(self):
-        for x in range(self.w):
-            for y in range(self.h):
+        for x in range(self.width):
+            for y in range(self.height):
                 print(self.board[x][y].state, end=' ')
             print()
 

@@ -1,9 +1,10 @@
 class Robot(object):
-    def __init__(self, wide, height):
-        self.w = wide
-        self.h = height
-        self.x = self.w / 2
-        self.y = self.h / 2
+    def __init__(self, mansion):
+        self.mansion = mansion
+        self.x = self.mansion.width / 2
+        self.y = self.mansion.height / 2
+        self.actuator = Actuator(mansion)
+        self.sensor = Sensor(mansion)
 
     def up(self):
         if self.x > 0:
@@ -38,3 +39,22 @@ class Robot(object):
 
     def get_y(self):
         return self.y
+
+
+class Actuator(object):
+    def __init__(self, mansion):
+        self.mansion = mansion
+
+    def suck(self, x, y):
+        self.mansion.suck_room(x, y)
+
+    def pickup(self, x, y):
+        self.mansion.pickup_room(x, y)
+
+
+class Sensor(object):
+    def __init__(self, mansion):
+        self.mansion = mansion
+
+    def get_mansion_state(self):
+        return self.mansion.board
