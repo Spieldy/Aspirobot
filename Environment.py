@@ -3,7 +3,8 @@ from Agent import Robot
 
 
 class Mansion(object):
-    def __init__(self, width, height):
+    def __init__(self, width, height, debug):
+        self.debug = debug
         self.width = width
         self.height = height
         self.board = [[Room(x, y) for x in range(self.width)] for y in range(self.height)]
@@ -15,13 +16,15 @@ class Mansion(object):
         if event_occurred < 29:
             x = randint(0, self.width - 1)
             y = randint(0, self.height - 1)
-            print('+dirt (', x, ',', y, ')')
+            if self.debug:
+                print('+dirt (', x, ',', y, ')')
             self.board[x][y].insert_dirt()
         event_occurred = randint(0, 99)
         if event_occurred < 29:
             x = randint(0, self.width - 1)
             y = randint(0, self.height - 1)
-            print('+jewel (', x, ',', y, ')')
+            if self.debug:
+                print('+jewel (', x, ',', y, ')')
             self.board[x][y].insert_jewel()
 
     def insert_robot(self):
@@ -30,14 +33,22 @@ class Mansion(object):
         y = self.width // 2
         self.x_robot = x
         self.y_robot = y
-        self.board[x][y].set_robot_on()
         return robot
 
-    def suck_room(self, x, y):
-        self.board[x][y] = 0
+    def suck_room(self):
+        if self.board[self.x_robot][self.y_robot].has_jewel():
+            if self.debug:
+                print("OUPS, jewel lost")
+        self.board[self.x_robot][self.y_robot].state = 0
 
-    def pickup_room(self, x, y):
-        self.board[x][y] = 0
+    def pickup_room(self):
+        if self.board[self.x_robot][self.y_robot].state == 2:
+            self.board[self.x_robot][self.y_robot].state = 0
+        if self.board[self.x_robot][self.y_robot].state == 3:
+            self.board[self.x_robot][self.y_robot].state = 1
+        if self.board[self.x_robot][self.y_robot].state == 1:
+            if self.debug:
+                print("Dirt not to pick up !!")
 
     def show(self):
         print('+', end='')
@@ -52,8 +63,8 @@ class Mansion(object):
                 else:
                     print('~' if self.board[x][y].state == 1
                           else 'o' if self.board[x][y].state == 2
-                          else 'õ' if self.board[x][y].state == 3
-                          else ' ', end=' ')
+                    else 'õ' if self.board[x][y].state == 3
+                    else ' ', end=' ')
             print('|')
         print('+', end='')
         for i in range(self.width):
@@ -95,12 +106,3 @@ class Room(object):
             return True
         else:
             return False
-
-    def set_robot_on(self):  # TODO Et si le robot etait juste modélisé par un x et un y dans le mansion, et pas stocké en boolean dans chaque room ?
-        self.robot = True
-
-    def set_robot_off(self):
-        self.robot = False
-
-    def is_robot_on(self):
-        return self.robot

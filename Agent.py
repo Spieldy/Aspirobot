@@ -18,7 +18,6 @@ class Robot(object):
 
     def update(self):
         self.move()
-        self.do()
 
     def move(self):  # TODO up() right() etc does not work because it now needs to call Room.set_robot()
         r = randint(0, 3)  # TODO maybe add move commands to Mansion
@@ -32,49 +31,31 @@ class Robot(object):
             self.left()
 
     def up(self):
-        if self.x > 0:
-            self.x -= 1
-            return True
-        else:
-            return False
+        if self.mansion.x_robot > 0:
+            self.mansion.x_robot -= 1
 
     def down(self):
-        if self.x < self.w - 1:
-            self.x += 1
-            return True
-        else:
-            return False
+        if self.mansion.x_robot < (self.mansion.width - 1):
+            self.mansion.x_robot += 1
 
     def left(self):
-        if self.y > 0:
-            self.y -= 1
-            return True
-        else:
-            return False
+        if self.mansion.y_robot > 0:
+            self.mansion.y_robot -= 1
 
     def right(self):
-        if self.y < self.h - 1:
-            self.y += 1
-            return True
-        else:
-            return False
-
-    def get_x(self):
-        return self.x
-
-    def get_y(self):
-        return self.y
+        if self.mansion.y_robot < (self.mansion.height - 1):
+            self.mansion.y_robot += 1
 
 
 class Actuator(object):
     def __init__(self, mansion):
         self.mansion = mansion
 
-    def suck(self, x, y):
-        self.mansion.suck_room(x, y)
+    def suck(self):
+        self.mansion.suck_room()
 
-    def pickup(self, x, y):
-        self.mansion.pickup_room(x, y)
+    def pickup(self):
+        self.mansion.pickup_room()
 
 
 class Sensor(object):
