@@ -1,7 +1,8 @@
 # Aspirobot
+**`8INF846` Intelligence Artificielle**
 ![alt tag](https://vgy.me/GaNIBk.gif)
-- Théo Ménard
-- Jérémy Spieldenner
+- `MENT09089403` Théo Ménard
+- `SPIJ03109508` Jérémy Spieldenner
 
 ## Instruction d'éxecution
 Executer le fichier `Main.py` avec python
