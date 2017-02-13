@@ -4,12 +4,14 @@ class Robot(object):
         self.actuator = Actuator(mansion)
         self.sensor = Sensor(mansion)
         self.belief = None
+        self.desire = None
         self.intentions = ''
         self.max_steps = 10
 
     def update(self):
         if self.intentions.__len__() > 0:
-            self.mansion.status_message += "Executing path of length %i: " % self.max_steps + self.intentions + "\n"
+            self.mansion.status_message += "Executing path of length %i: " % self.max_steps \
+                                           + self.intentions[0].capitalize() + self.intentions[1:] + "\n"
             self.act()
         else:
             self.mansion.status_message += "Planning path...\n"
@@ -34,14 +36,20 @@ class Robot(object):
     def think(self):
         self.belief = self.sensor.get_mansion_state()
         self.max_steps = self.sensor.get_performance_score() // 10
+        self.desire = [[False for x in range(self.mansion.width)] for y in range(self.mansion.height)]
         if self.max_steps < 1:
             self.max_steps = 1
-        rx = self.mansion.x_robot
-        ry = self.mansion.y_robot
-        dst_x, dst_y = self.find_closest(rx, ry)
-        if dst_x < 0:
-            return
-        self.update_intentions(rx, ry, dst_x, dst_y)
+        src_x = self.mansion.x_robot
+        src_y = self.mansion.y_robot
+
+        while self.intentions.__len__() < self.max_steps:
+            dst_x, dst_y = self.find_closest(src_x, src_y)
+            if dst_x < 0:
+                break
+            self.desire[dst_x][dst_y] = True
+            self.update_intentions(src_x, src_y, dst_x, dst_y)
+            src_x = dst_x
+            src_y = dst_y
 
     def find_closest(self, rx, ry):
         closest_dist = self.mansion.width * 4
@@ -49,7 +57,7 @@ class Robot(object):
         closest_y = -1
         for x in range(self.mansion.width):
             for y in range(self.mansion.height):
-                if self.belief[x][y].state > 0:
+                if (self.belief[x][y].state > 0) & (not self.desire[x][y]):
                     dist = abs(rx - x) + abs(ry - y)
                     if dist < closest_dist:
                         closest_x = x
@@ -58,23 +66,23 @@ class Robot(object):
         return closest_x, closest_y
 
     def update_intentions(self, src_x, src_y, dst_x, dst_y):
-        while src_x != dst_x:
+        while (src_x != dst_x) & (self.intentions.__len__() < self.max_steps):
             if src_x < dst_x:
                 src_x += 1
                 self.intentions += 'r'
             if src_x > dst_x:
                 src_x -= 1
                 self.intentions += 'l'
-        while src_y != dst_y:
+        while (src_y != dst_y) & (self.intentions.__len__() < self.max_steps):
             if src_y < dst_y:
                 src_y += 1
                 self.intentions += 'd'
             if src_y > dst_y:
                 src_y -= 1
                 self.intentions += 'u'
-        if self.belief[dst_x][dst_y].has_jewel():
+        if (self.belief[dst_x][dst_y].has_jewel()) & (self.intentions.__len__() < self.max_steps):
             self.intentions += 'p'
-        if self.belief[dst_x][dst_y].has_dirt():
+        if (self.belief[dst_x][dst_y].has_dirt()) & (self.intentions.__len__() < self.max_steps):
             self.intentions += 's'
 
 
