@@ -18,6 +18,7 @@ class Mansion(object):
         self.board = [[Room(x, y) for x in range(self.width)] for y in range(self.height)]
         self.x_robot = None
         self.y_robot = None
+        self.score = None
 
     def update(self):
         event_occurred = randint(0, 99)
