@@ -1,6 +1,3 @@
-from random import randint
-
-
 class Robot(object):
     def __init__(self, mansion):
         self.mansion = mansion
@@ -8,12 +5,14 @@ class Robot(object):
         self.sensor = Sensor(mansion)
         self.belief = None
         self.intentions = ''
+        self.max_steps = 10
 
     def update(self):
-        print(self.intentions)
         if self.intentions.__len__() > 0:
+            self.mansion.status_message += "Executing path " + self.intentions + "\n"
             self.act()
         else:
+            self.mansion.status_message += "Planning path...\n"
             self.think()
 
     def act(self):
@@ -37,7 +36,6 @@ class Robot(object):
         rx = self.mansion.x_robot
         ry = self.mansion.y_robot
         dst_x, dst_y = self.find_closest(rx, ry)
-        print('closest:', dst_x, '', dst_y)
         if dst_x < 0:
             return
         self.update_intentions(rx, ry, dst_x, dst_y)

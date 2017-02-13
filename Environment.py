@@ -12,6 +12,7 @@ class Mansion(object):
         self.nb_pickup = 0
         self.nb_suck = 0
         self.debug = debug
+        self.status_message = ''
         self.width = width
         self.height = height
         self.board = [[Room(x, y) for x in range(self.width)] for y in range(self.height)]
@@ -23,15 +24,11 @@ class Mansion(object):
         if event_occurred < 10:
             x = randint(0, self.width - 1)
             y = randint(0, self.height - 1)
-            if self.debug:
-                print('+dirt (', x, ',', y, ')')
             self.board[x][y].insert_dirt()
         event_occurred = randint(0, 99)
         if event_occurred < 10:
             x = randint(0, self.width - 1)
             y = randint(0, self.height - 1)
-            if self.debug:
-                print('+jewel (', x, ',', y, ')')
             self.board[x][y].insert_jewel()
 
     def insert_robot(self):
@@ -43,25 +40,33 @@ class Mansion(object):
         return robot
 
     def suck_room(self):
-        if self.board[self.x_robot][self.y_robot].has_jewel():
-            if self.debug:
-                print("OUPS, jewel lost")
+        room = self.board[self.x_robot][self.y_robot]
+        if room.has_jewel():
+            self.status_message += "Oops, jewel sucked!\n"
+        if room.has_dirt():
+            self.status_message += "Dust removed.\n"
+        else:
+            if not room.has_jewel():
+                self.status_message += "Nothing to suck!\n"
+
         self.board[self.x_robot][self.y_robot].state = 0
         self.nb_suck += 1
         self.nb_action += 1
 
     def pickup_room(self):
-        if self.board[self.x_robot][self.y_robot].state == 2:
-            self.board[self.x_robot][self.y_robot].state = 0
+        room = self.board[self.x_robot][self.y_robot]
+        if (room.state == 1) | (room.state == 0):
+            self.status_message += "Nothing to pick up!.\n"
+        if room.state == 2:
+            room.state = 0
             self.nb_pickup += 1
             self.nb_action += 1
-        if self.board[self.x_robot][self.y_robot].state == 3:
-            self.board[self.x_robot][self.y_robot].state = 1
+            self.status_message += "Jewel picked up.\n"
+        if room.state == 3:
+            room.state = 1
             self.nb_pickup += 1
             self.nb_action += 1
-        if self.board[self.x_robot][self.y_robot].state == 1:
-            if self.debug:
-                print("Dirt not to pick up !!")
+            self.status_message += "Jewel picked up.\n"
 
     def show(self):
         os.system('cls' if os.name == 'nt' else 'clear')
@@ -97,6 +102,8 @@ class Mansion(object):
         for i in range(self.width):
             print(' -', end='')
         print(' +')
+        print(self.status_message)
+        self.status_message = ''
 
 
 class Room(object):
