@@ -1,7 +1,7 @@
 from Environment import Mansion
 import time
 
-mansion = Mansion(5, 5, True)
+mansion = Mansion(10, 10, True)
 robot = mansion.insert_robot()
 mansion.show()
 print()
