@@ -42,6 +42,7 @@ Il va alors planifier un nombre d'action N en fonction de l'environnement autour
 - Le robot parcourt chaque pièce du manoir pour déterminer celle qui contient quelque chose qui est la plus proche de lui (fonction `find_closest()`). Il s'agit de son objectif. Si il ne trouve rien, il s'arrête là.
 - Une fois trouvé, il va mettre à jour ses intentions pour atteindre cette objectif (fonction `update_intentions()`)
 - Répeter jusqu'à ce que l'action queue soit pleine.
+
 L'exploration consomme une action dans la simulation, ainsi un robot peu confiant qui prend plus de temps pour réfléchir sera plus lent.
 
 ### Mesure de performance
@@ -49,4 +50,5 @@ Elle impacte directement la longueur de l'action queue : plus elle est élevée,
 - Faible perte de performance à chaque mouvement et action (cout de l'énergie)
 - Gain dès qu'un objet est correctement aspiré ou ramassé
 - Grande perte dès qu'un bijou est aspiré
+
 Ainsi, plus le robot ramasse d'objet sans erreur, plus il planifiera à l'avance (= prise de confiance et minimisation du temps passé à réfléchir), plus il augmente ses chances d'aspirer un bijou.
