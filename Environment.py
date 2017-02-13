@@ -4,13 +4,8 @@ import os
 
 
 class Mansion(object):
+
     def __init__(self, width, height, debug):
-        self.av_action = None
-        self.av_pickup = None
-        self.av_suck = None
-        self.nb_action = 0
-        self.nb_pickup = 0
-        self.nb_suck = 0
         self.debug = debug
         self.status_message = ''
         self.width = width
@@ -19,6 +14,9 @@ class Mansion(object):
         self.x_robot = None
         self.y_robot = None
         self.score = None
+        self.G_SUCK = 10
+        self.G_PICKUP = 10
+        self.B_SUCK = 30
 
     def update(self):
         event_occurred = randint(0, 99)
@@ -38,52 +36,40 @@ class Mansion(object):
         y = self.width // 2
         self.x_robot = x
         self.y_robot = y
+        self.score = 100
         return robot
 
     def suck_room(self):
         room = self.board[self.x_robot][self.y_robot]
-        if room.has_jewel():
+        if room.has_jewel() and room.has_dirt():
             self.status_message += "Oops, jewel sucked!\n"
-        if room.has_dirt():
+            self.score -= self.B_SUCK
+        if room.has_dirt() and not room.has_jewel():
             self.status_message += "Dust removed.\n"
+            self.score += self.G_SUCK
         else:
-            if not room.has_jewel():
+            if not room.has_jewel() and not room.has_dirt():
                 self.status_message += "Nothing to suck!\n"
 
         self.board[self.x_robot][self.y_robot].state = 0
-        self.nb_suck += 1
-        self.nb_action += 1
 
     def pickup_room(self):
         room = self.board[self.x_robot][self.y_robot]
-        if (room.state == 1) | (room.state == 0):
+        if (room.state == 1) or (room.state == 0):
             self.status_message += "Nothing to pick up!.\n"
         if room.state == 2:
             room.state = 0
-            self.nb_pickup += 1
-            self.nb_action += 1
             self.status_message += "Jewel picked up.\n"
+            self.score += self.G_PICKUP
         if room.state == 3:
             room.state = 1
-            self.nb_pickup += 1
-            self.nb_action += 1
             self.status_message += "Jewel picked up.\n"
+            self.score += self.G_PICKUP
 
     def show(self):
         os.system('cls' if os.name == 'nt' else 'clear')
-        if False:
-            print("Number")
-            print("  actions:  " + str(self.nb_action))
-            print("  pickups:  " + str(self.nb_pickup))
-            print("  sucks:    " + str(self.nb_suck))
-            if self.nb_suck > 0:
-                print("Ratio")
-                print("  pickups/sucks:  " + str(self.nb_pickup / self.nb_suck))
-            print("Average")
-            print("  move before action:  " + str(self.av_action))
-            print("  move before pickup:  " + str(self.av_suck))
-            print("  move before suck:    " + str(self.av_pickup))
-            print()
+        print("Score: " + str(self.score))
+        print()
         print('+', end='')
         for i in range(self.width):
             print(' -', end='')
