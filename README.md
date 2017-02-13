@@ -39,9 +39,9 @@ Le robot implémente le modèle BDI (Belief - Desire - Intentions)
 ### Exploration
 Périodiquement le robot s'arrête pour réfléchir aux actions qu'il va entreprendre (fonction `think()`)
 Il va alors planifier un nombre d'action N en fonction de l'environnement autour de lui.
-- Le robot parcourt chaque pièce du manoir pour déterminer celle qui contient quelque chose qui est la plus proche de lui (fonction `find_closest()`). Il s'agit de son objectif. Si il ne trouve rien, il s'arrête là.
+- Le robot parcourt chaque pièce du manoir pour déterminer celle qui contient quelque chose qui est la plus proche de lui (fonction `find_closest()`). Elle est ajoutée dans ses désirs. Si il ne trouve rien, il s'arrête là.
 - Une fois trouvé, il va mettre à jour ses intentions pour atteindre cette objectif (fonction `update_intentions()`)
-- Répeter jusqu'à ce que l'action queue soit pleine.
+- Répete jusqu'à ce que l'action queue soit pleine. La prochaine salle la plus proche est déterminée depuis la dernière salle ajoutée à ses désirs.
 
 L'exploration consomme une action dans la simulation, ainsi un robot peu confiant qui prend plus de temps pour réfléchir sera plus lent.
 
