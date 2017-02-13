@@ -1,59 +1,57 @@
 from random import randint
-from Agent import Robot
 import os
+
+# Global variables defining performance increase or decrease
+GOOD_SUCK = 8
+GOOD_PICKUP = 8
+BAD_SUCK = 100
+# Global variables defining generation probabilities
+DIRT_PROBABILITY = 50
+JEWEL_PROBABILITY = 10
 
 
 class Mansion(object):
 
-    def __init__(self, width, height, debug):
-        self.debug = debug
-        self.status_message = ''
-        self.width = width
-        self.height = height
-        self.board = [[Room(x, y) for x in range(self.width)] for y in range(self.height)]
-        self.x_robot = None
-        self.y_robot = None
-        self.score = None
-        self.G_SUCK = 8
-        self.G_PICKUP = 8
-        self.B_SUCK = 100
+    def __init__(self, dim):
+        self.status_message = ''  # Used to display information
+        self.width = dim  # Mansion dimensions
+        self.height = dim
+        self.board = [[Room(x, y) for x in range(self.width)] for y in range(self.height)]  # The 2D array of rooms
+        self.x_robot = self.width // 2  # Robot position
+        self.y_robot = self.height // 2
+        self.score = 50  # Performance score
 
+    # Called once per frame, decides whether dust or jewels should appear
     def update(self):
         self.status_message += 'Performance score: %i\n' % self.score
+        # Generate dust
         event_occurred = randint(0, 99)
-        if event_occurred < 20:
+        if event_occurred < DIRT_PROBABILITY:
             x = randint(0, self.width - 1)
             y = randint(0, self.height - 1)
             self.board[x][y].insert_dirt()
+        # Generate jewel
         event_occurred = randint(0, 99)
-        if event_occurred < 20:
+        if event_occurred < JEWEL_PROBABILITY:
             x = randint(0, self.width - 1)
             y = randint(0, self.height - 1)
             self.board[x][y].insert_jewel()
 
-    def insert_robot(self):
-        robot = Robot(self)
-        x = self.height // 2
-        y = self.width // 2
-        self.x_robot = x
-        self.y_robot = y
-        self.score = 50
-        return robot
-
+    # Suck the content of the room where the robot is
     def suck_room(self):
         room = self.board[self.x_robot][self.y_robot]
         if room.has_jewel() and room.has_dirt():
             self.status_message += "Oops, jewel sucked!\n"
-            self.score -= self.B_SUCK
+            self.score -= BAD_SUCK
         if room.has_dirt() and not room.has_jewel():
             self.status_message += "Dust sucked.\n"
-            self.score += self.G_SUCK
+            self.score += GOOD_SUCK
         else:
             if not room.has_jewel() and not room.has_dirt():
                 self.status_message += "Nothing to suck!\n"
-
         self.board[self.x_robot][self.y_robot].state = 0
 
+    # Pick up the content of the room where the robot is
     def pickup_room(self):
         room = self.board[self.x_robot][self.y_robot]
         if (room.state == 1) or (room.state == 0):
@@ -61,12 +59,13 @@ class Mansion(object):
         if room.state == 2:
             room.state = 0
             self.status_message += "Jewel picked up.\n"
-            self.score += self.G_PICKUP
+            self.score += GOOD_PICKUP
         if room.state == 3:
             room.state = 1
             self.status_message += "Jewel picked up.\n"
-            self.score += self.G_PICKUP
+            self.score += GOOD_PICKUP
 
+    # Display the mansion state
     def show(self):
         os.system('cls' if os.name == 'nt' else 'clear')
         print('+', end='')
