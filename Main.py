@@ -10,5 +10,5 @@ while True:
     mansion.update()
     robot.update()
     mansion.show()
-    time.sleep(0.2)
+    time.sleep(0.5)
     print()

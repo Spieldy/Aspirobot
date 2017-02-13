@@ -14,19 +14,19 @@ class Mansion(object):
         self.x_robot = None
         self.y_robot = None
         self.score = None
-        self.G_SUCK = 10
-        self.G_PICKUP = 10
-        self.B_SUCK = 30
+        self.G_SUCK = 8
+        self.G_PICKUP = 8
+        self.B_SUCK = 100
 
     def update(self):
-        self.status_message += 'Performance score: %i\n' %self.score
+        self.status_message += 'Performance score: %i\n' % self.score
         event_occurred = randint(0, 99)
-        if event_occurred < 10:
+        if event_occurred < 20:
             x = randint(0, self.width - 1)
             y = randint(0, self.height - 1)
             self.board[x][y].insert_dirt()
         event_occurred = randint(0, 99)
-        if event_occurred < 10:
+        if event_occurred < 20:
             x = randint(0, self.width - 1)
             y = randint(0, self.height - 1)
             self.board[x][y].insert_jewel()
@@ -37,7 +37,7 @@ class Mansion(object):
         y = self.width // 2
         self.x_robot = x
         self.y_robot = y
-        self.score = 100
+        self.score = 50
         return robot
 
     def suck_room(self):
@@ -46,7 +46,7 @@ class Mansion(object):
             self.status_message += "Oops, jewel sucked!\n"
             self.score -= self.B_SUCK
         if room.has_dirt() and not room.has_jewel():
-            self.status_message += "Dust removed.\n"
+            self.status_message += "Dust sucked.\n"
             self.score += self.G_SUCK
         else:
             if not room.has_jewel() and not room.has_dirt():
@@ -73,9 +73,9 @@ class Mansion(object):
         for i in range(self.width):
             print(' -', end='')
         print(' +')
-        for x in range(self.width):
+        for y in range(self.height):
             print('|', end=' ')
-            for y in range(self.height):
+            for x in range(self.width):
                 if (y == self.y_robot) & (x == self.x_robot):
                     print("@", end=' ')
                 else:
