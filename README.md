@@ -8,9 +8,11 @@ Executer le fichier `Main.py` avec python
 
 ## Environnement
 L'environnement est défini dans le fichier `Environment.py`. Il contient les classes `Mansion` et `Room`
+
 Le manoir contient un tableau 2D de Room, la position du robot, ainsi que la mesure de performance.
 La classe Room est une simple classe Quality-of-Life contenant de la poussière ou un bijou.
 La seule logique contenue dans ce fichier est celle du calcul de performance lorsque le robot aspire ou ramasse le contenu d'une pièce.
+
 Il est possible de changer la taille du manoir via son constructeur, et de changer les probabilités d'apparition d'éléments ainsi que les couts en performance pour chaque action.
 
 ### Affichage
@@ -24,8 +26,9 @@ L'agent est défini dans le fichier `Agent.py`. Il contient les classes `Robot`,
 
 ### Capacité
 Le robot utilise des capteurs et des effecteurs (classe `Sensor` et `Actuator`).
-Il est ainsi capable de voir tout le manoir, et récupérer sa mesure de performance.
-Il peut également se déplacer (haut bas gauche droite), aspirer une pièce (retire poussière ET bijou de la pièce en cours) et ramasser le contenu d'une pièce (retire uniquement un bijou)
+Il est capable de voir tout le manoir, et récupérer sa mesure de performance.
+Il peut également se déplacer (haut bas gauche droite), aspirer une pièce (retire poussière ET bijou de la pièce en cours) et ramasser le contenu d'une pièce (retire uniquement un bijou).
+
 Le robot consomme de l'énergie mais on la considère illimitée.
 
 ### Modèle BDI
