@@ -20,14 +20,14 @@ class Mansion(object):
 
     def update(self):
         event_occurred = randint(0, 99)
-        if event_occurred < 29:
+        if event_occurred < 10:
             x = randint(0, self.width - 1)
             y = randint(0, self.height - 1)
             if self.debug:
                 print('+dirt (', x, ',', y, ')')
             self.board[x][y].insert_dirt()
         event_occurred = randint(0, 99)
-        if event_occurred < 29:
+        if event_occurred < 10:
             x = randint(0, self.width - 1)
             y = randint(0, self.height - 1)
             if self.debug:
@@ -65,18 +65,19 @@ class Mansion(object):
 
     def show(self):
         os.system('cls' if os.name == 'nt' else 'clear')
-        print("Number")
-        print("  actions:  " + str(self.nb_action))
-        print("  pickups:  " + str(self.nb_pickup))
-        print("  sucks:    " + str(self.nb_suck))
-        if self.nb_suck > 0:
-            print("Ratio")
-            print("  pickups/sucks:  " + str(self.nb_pickup / self.nb_suck))
-        print("Average")
-        print("  move before action:  " + str(self.av_action))
-        print("  move before pickup:  " + str(self.av_suck))
-        print("  move before suck:    " + str(self.av_pickup))
-        print()
+        if False:
+            print("Number")
+            print("  actions:  " + str(self.nb_action))
+            print("  pickups:  " + str(self.nb_pickup))
+            print("  sucks:    " + str(self.nb_suck))
+            if self.nb_suck > 0:
+                print("Ratio")
+                print("  pickups/sucks:  " + str(self.nb_pickup / self.nb_suck))
+            print("Average")
+            print("  move before action:  " + str(self.av_action))
+            print("  move before pickup:  " + str(self.av_suck))
+            print("  move before suck:    " + str(self.av_pickup))
+            print()
         print('+', end='')
         for i in range(self.width):
             print(' -', end='')

@@ -6,10 +6,9 @@ robot = mansion.insert_robot()
 mansion.show()
 print()
 
-
 while True:
     mansion.update()
     robot.update()
     mansion.show()
-    time.sleep(1.00)
+    time.sleep(0.2)
     print()
