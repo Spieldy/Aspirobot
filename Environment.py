@@ -1,6 +1,7 @@
 from random import randint
 from Agent import Robot
 import os
+import emoji
 
 
 class Mansion(object):
@@ -86,7 +87,7 @@ class Mansion(object):
             print('|', end=' ')
             for y in range(self.height):
                 if (y == self.y_robot) & (x == self.x_robot):
-                    print("@", end=' ')
+                    print(emoji.emojize(":electric_plug:"), end=' ')
                 else:
                     print('~' if self.board[x][y].state == 1
                           else 'o' if self.board[x][y].state == 2
