@@ -19,6 +19,7 @@ class Mansion(object):
         self.B_SUCK = 30
 
     def update(self):
+        self.status_message += 'Performance score: %i\n' %self.score
         event_occurred = randint(0, 99)
         if event_occurred < 10:
             x = randint(0, self.width - 1)
@@ -68,8 +69,6 @@ class Mansion(object):
 
     def show(self):
         os.system('cls' if os.name == 'nt' else 'clear')
-        print("Score: " + str(self.score))
-        print()
         print('+', end='')
         for i in range(self.width):
             print(' -', end='')
