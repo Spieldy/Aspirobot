@@ -1,4 +1,5 @@
 # Aspirobot
+![alt tag](https://vgy.me/GaNIBk.gif)
 - Théo Ménard
 - Jérémy Spieldenner
 
