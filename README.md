@@ -1,18 +1,29 @@
 # Aspirobot
+**`8INF846` Intelligence Artificielle**
 
 ![alt tag](https://vgy.me/GaNIBk.gif)
-- Théo Ménard
-- Jérémy Spieldenner
+- `MENT09089403` Théo Ménard
+- `SPIJ03109508` Jérémy Spieldenner
 
 ## Instruction d'éxecution
 Executer le fichier `Main.py` avec python
 
 ## Environnement
 L'environnement est défini dans le fichier `Environment.py`. Il contient les classes `Mansion` et `Room`
+
 Le manoir contient un tableau 2D de Room, la position du robot, ainsi que la mesure de performance.
 La classe Room est une simple classe Quality-of-Life contenant de la poussière ou un bijou.
 La seule logique contenue dans ce fichier est celle du calcul de performance lorsque le robot aspire ou ramasse le contenu d'une pièce.
+
 Il est possible de changer la taille du manoir via son constructeur, et de changer les probabilités d'apparition d'éléments ainsi que les couts en performance pour chaque action.
+
+### Propriétés
+- **Complètement observable** L'agent peut voir tout le manoir à tout instant.
+- **Stochastique** Les éléments apparaissent aléatoirement dans les pièces.
+- **Séquentiel** Les éléments ne peuvent apparaitre que sur une case préalablement vidée par l'agent. 
+- **Dynamique** Les éléments apparaissent indépendamment des actions de l'agent.
+- **Discret** Le nombre d'états du manoir est fini.
+- **Mono-agent** Seul, on va plus vite.
 
 ### Affichage
 - `@` Le robot
@@ -23,10 +34,18 @@ Il est possible de changer la taille du manoir via son constructeur, et de chang
 ## Agent
 L'agent est défini dans le fichier `Agent.py`. Il contient les classes `Robot`, `Actuator` et `Sensor`
 
+### Propriétés
+Il s'agit d'un **agent basé sur les buts** : selon sa mesure de performance, il prendra plus ou moins de temps pour réfléchir, ses buts en sont altérés et donc son comportement également.
+- **Mesure de performance :** Poussière et bijoux aspirés, bijoux ramassés, énergie consommée
+- **Environnement :** Manoir, pièces, poussière, bijoux
+- **Effecteurs :** Système de déplacement, aspirateur, ramasseur
+- **Capteurs :** Capteur de l'état du manoir
+
 ### Capacité
 Le robot utilise des capteurs et des effecteurs (classe `Sensor` et `Actuator`).
-Il est ainsi capable de voir tout le manoir, et récupérer sa mesure de performance.
-Il peut également se déplacer (haut bas gauche droite), aspirer une pièce (retire poussière ET bijou de la pièce en cours) et ramasser le contenu d'une pièce (retire uniquement un bijou)
+Il est capable de voir tout le manoir, et récupérer sa mesure de performance.
+Il peut également se déplacer (haut bas gauche droite), aspirer une pièce (retire poussière ET bijou de la pièce en cours) et ramasser le contenu d'une pièce (retire uniquement un bijou).
+
 Le robot consomme de l'énergie mais on la considère illimitée.
 
 ### Modèle BDI

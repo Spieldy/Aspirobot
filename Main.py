@@ -1,11 +1,15 @@
 from Environment import Mansion
+from Agent import Robot
 import time
 
-mansion = Mansion(10, 10, True)
-robot = mansion.insert_robot()
+
+# Initialize
+mansion = Mansion(5)
+robot = Robot(mansion)
 mansion.show()
 print()
 
+# Basic game loop
 while True:
     mansion.update()
     robot.update()
